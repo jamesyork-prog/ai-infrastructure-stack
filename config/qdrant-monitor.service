@@ -1,0 +1,31 @@
+# Qdrant Hardware Monitoring Service
+# Place this file in /etc/systemd/system/qdrant-monitor.service
+# Enable with: sudo systemctl enable qdrant-monitor.service
+
+[Unit]
+Description=Qdrant Hardware Monitoring Service
+After=network.target docker.service
+Wants=docker.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/python3 /home/your-username/monitoring/qdrant_monitor.py
+WorkingDirectory=/home/your-username/monitoring
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+
+# Usage:
+# sudo systemctl daemon-reload
+# sudo systemctl enable qdrant-monitor.service  
+# sudo systemctl start qdrant-monitor.service
+# sudo systemctl status qdrant-monitor.service
